@@ -1,0 +1,12 @@
+diff -p -up faac/frontend/main.c.format-string faac/frontend/main.c
+--- faac/frontend/main.c.format-string	2009-01-12 13:10:54.000000000 +0100
++++ faac/frontend/main.c	2009-01-12 13:11:12.000000000 +0100
+@@ -708,7 +708,7 @@ int main(int argc, char *argv[])
+         break;
+ #endif
+         case 'L':
+-        fprintf(stderr, faac_copyright_string);
++	fprintf(stderr, "%s", faac_copyright_string);
+         dieMessage = license;
+         break;
+     case 'X':
