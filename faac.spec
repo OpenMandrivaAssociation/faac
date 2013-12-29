@@ -6,7 +6,7 @@
 
 Name:		faac
 Version:	1.28
-Release:	6
+Release:	7
 Epoch:		1
 Summary:	Freeware Advanced Audio Encoder
 Group:		Sound
