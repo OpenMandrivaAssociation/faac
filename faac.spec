@@ -5,17 +5,15 @@
 %define develname %mklibname -d %{name}
 
 Name:		faac
-Version:	1.28
-Release:	11
+Version:	1.29.9.2
+Release:	1
 Epoch:		1
 Summary:	Freeware Advanced Audio Encoder
 Group:		Sound
 License:	LGPLv2+
 URL:		http://www.audiocoding.com
-Source0:	http://prdownloads.sourceforge.net/faac/%{name}-%{version}.tar.bz2
-Patch0:		faac-1.28-external-libmp4v2.patch
-Patch1:		faac-1.26-format.string.patch
-Patch2:		faac-1.28-automake-1.13.patch
+# See also https://github.com/knik0/faac
+Source0:	https://downloads.sourceforge.net/project/faac/faac-src/faac-1.29/faac-%{version}.tar.gz
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	autoconf
 BuildRequires:	dos2unix
