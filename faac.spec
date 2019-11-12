@@ -5,7 +5,7 @@
 %define develname %mklibname -d %{name}
 
 Name:		faac
-Version:	1.29.9.2
+Version:	1.30
 Release:	1
 Epoch:		1
 Summary:	Freeware Advanced Audio Encoder
@@ -13,7 +13,7 @@ Group:		Sound
 License:	LGPLv2+
 URL:		http://www.audiocoding.com
 # See also https://github.com/knik0/faac
-Source0:	https://downloads.sourceforge.net/project/faac/faac-src/faac-1.29/faac-%{version}.tar.gz
+Source0:	https://github.com/knik0/faac/archive/1_30/%{name}-1_30.tar.gz
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	autoconf
 BuildRequires:	dos2unix
@@ -58,7 +58,7 @@ This package is in restricted, as the MPEG-4 format is covered
 by software patents.
 
 %prep
-%setup -q
+%setup -q -n %{name}-1_30
 %apply_patches
 #dos2unix configure.in
 aclocal
