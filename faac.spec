@@ -59,7 +59,7 @@ by software patents.
 
 %prep
 %setup -q -n %{name}-1_30
-%apply_patches
+%autopatch -p1
 #dos2unix configure.in
 aclocal
 autoheader
