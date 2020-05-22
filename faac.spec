@@ -1,19 +1,29 @@
+# faac is used by ffmpeg, ffmpeg is used by wine
+%ifarch %{x86_64}
+%bcond_without compat32
+%else
+%bcond_with compat32
+%endif
+
 %define distsuffix plf
 
 %define major 0
 %define libname %mklibname %{name} %{major}
 %define develname %mklibname -d %{name}
+%define lib32name lib%{name}%{major}
+%define devel32name lib%{name}-devel
 
 Name:		faac
 Version:	1.30
-Release:	1
+%define fsversion %(echo %{version} |sed -e 's,\\.,_,g')
+Release:	2
 Epoch:		1
 Summary:	Freeware Advanced Audio Encoder
 Group:		Sound
 License:	LGPLv2+
 URL:		http://www.audiocoding.com
 # See also https://github.com/knik0/faac
-Source0:	https://github.com/knik0/faac/archive/1_30/%{name}-1_30.tar.gz
+Source0:	https://github.com/knik0/faac/archive/%{fsversion}/%{name}-%{fsversion}.tar.gz
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	autoconf
 BuildRequires:	dos2unix
@@ -44,7 +54,6 @@ by software patents.
 Summary:	Free Advanced Audio Encoder development files
 Group:		Development/C++
 Requires:	%{libname} = %{epoch}:%{version}-%{release}
-Provides:	lib%{name}-devel = %{epoch}:%{version}-%{release}
 Provides:	%{name}-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	%mklibname -d %{name} 0
 
@@ -57,22 +66,66 @@ libfaac.
 This package is in restricted, as the MPEG-4 format is covered
 by software patents.
 
+%if %{with compat32}
+%package -n %{lib32name}
+Summary:	Free Advanced Audio Encoder shared library (32-bit)
+Group:		System/Libraries
+
+%description -n %{lib32name}
+FAAC is an AAC encoder based on the ISO MPEG-4 reference code.
+
+This package contains the shared library needed by programs based on
+libfaac.
+
+This package is in restricted, as the MPEG-4 format is covered
+by software patents.
+
+%package -n %{devel32name}
+Summary:	Free Advanced Audio Encoder development files (32-bit)
+Group:		Development/C++
+Requires:	%{lib32name} = %{epoch}:%{version}-%{release}
+Requires:	%{develname} = %{epoch}:%{version}-%{release}
+
+%description -n %{devel32name}
+FAAC is an AAC encoder based on the ISO MPEG-4 reference code.
+
+This package contains the needed files for compiling programs with
+libfaac.
+
+This package is in restricted, as the MPEG-4 format is covered
+by software patents.
+%endif
+
 %prep
-%setup -q -n %{name}-1_30
-%autopatch -p1
-#dos2unix configure.in
+%autosetup -p1 -n %{name}-%{fsversion}
 aclocal
 autoheader
 libtoolize --automake
 automake --add-missing --copy
 autoconf
 
-%build
+export CONFIGURE_TOP="$(pwd)"
+%if %{with compat32}
+mkdir build32
+cd build32
+%configure32 --with-mp4v2=internal
+cd ..
+%endif
+mkdir build
+cd build
 %configure --with-mp4v2=internal
-%make
+
+%build
+%if %{with compat32}
+%make_build -C build32
+%endif
+%make_build -C build
 
 %install
-%makeinstall_std
+%if %{with compat32}
+%make_install -C build32
+%endif
+%make_install -C build
 # manual header installation
 %__mkdir_p %{buildroot}%{_includedir}
 %__cp include/*h %{buildroot}%{_includedir}
@@ -89,3 +142,11 @@ autoconf
 %files -n %develname
 %{_libdir}/*.so
 %{_includedir}/*
+
+%if %{with compat32}
+%files -n %{lib32name}
+%{_prefix}/lib/libfaac*so.%{major}*
+
+%files -n %{devel32name}
+%{_prefix}/lib/libfaac.so
+%endif
