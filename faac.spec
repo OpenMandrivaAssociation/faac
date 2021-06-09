@@ -5,6 +5,8 @@
 %bcond_with compat32
 %endif
 
+%global optflags %{optflags} -O3
+
 %define distsuffix plf
 
 %define major 0
@@ -16,7 +18,7 @@
 Name:		faac
 Version:	1.30
 %define fsversion %(echo %{version} |sed -e 's,\\.,_,g')
-Release:	2
+Release:	3
 Epoch:		1
 Summary:	Freeware Advanced Audio Encoder
 Group:		Sound
@@ -126,10 +128,10 @@ cd build
 %make_install -C build32
 %endif
 %make_install -C build
-# manual header installation
-%__mkdir_p %{buildroot}%{_includedir}
-%__cp include/*h %{buildroot}%{_includedir}
 
+# manual header installation
+mkdir -p %{buildroot}%{_includedir}
+cp include/*h %{buildroot}%{_includedir}
 
 %files
 %doc README TODO ChangeLog
