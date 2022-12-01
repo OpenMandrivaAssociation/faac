@@ -32,6 +32,9 @@ BuildRequires:	dos2unix
 #gw else the detection for libmp4v2 kicks in
 BuildConflicts:	%{libname}-devel < %{epoch}:%{version}-%{release}
 BuildConflicts:	%{develname} < %{epoch}:%{version}-%{release}
+%if %{with compat32}
+BuildRequires:  libc6
+%endif
 
 %description
 FAAC is an AAC encoder based on the ISO MPEG-4 reference code.
@@ -72,7 +75,6 @@ by software patents.
 %package -n %{lib32name}
 Summary:	Free Advanced Audio Encoder shared library (32-bit)
 Group:		System/Libraries
-BuildRequires:  libc6
 
 %description -n %{lib32name}
 FAAC is an AAC encoder based on the ISO MPEG-4 reference code.
