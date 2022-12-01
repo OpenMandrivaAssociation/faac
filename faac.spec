@@ -72,6 +72,7 @@ by software patents.
 %package -n %{lib32name}
 Summary:	Free Advanced Audio Encoder shared library (32-bit)
 Group:		System/Libraries
+BuildRequires:  libc6
 
 %description -n %{lib32name}
 FAAC is an AAC encoder based on the ISO MPEG-4 reference code.
