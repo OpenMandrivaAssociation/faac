@@ -18,7 +18,7 @@
 Name:		faac
 Version:	1.30
 %define fsversion %(echo %{version} |sed -e 's,\\.,_,g')
-Release:	3
+Release:	4
 Epoch:		1
 Summary:	Freeware Advanced Audio Encoder
 Group:		Sound
