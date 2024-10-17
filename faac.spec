@@ -23,7 +23,7 @@ Epoch:		1
 Summary:	Freeware Advanced Audio Encoder
 Group:		Sound
 License:	LGPLv2+
-URL:		http://www.audiocoding.com
+URL:		https://www.audiocoding.com
 # See also https://github.com/knik0/faac
 Source0:	https://github.com/knik0/faac/archive/%{fsversion}/%{name}-%{fsversion}.tar.gz
 BuildRequires:	pkgconfig(sndfile)
