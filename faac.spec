@@ -10,22 +10,23 @@
 %define distsuffix plf
 
 %define major 0
-%define libname %mklibname %{name} %{major}
+%define oldlibname %mklibname %{name} 0
+%define libname %mklibname %{name}
 %define develname %mklibname -d %{name}
-%define lib32name lib%{name}%{major}
+%define oldlib32name lib%{name}0
+%define lib32name lib%{name}
 %define devel32name lib%{name}-devel
 
 Name:		faac
-Version:	1.30
-%define fsversion %(echo %{version} |sed -e 's,\\.,_,g')
-Release:	4
+Version:	1.31
+Release:	1
 Epoch:		1
 Summary:	Freeware Advanced Audio Encoder
 Group:		Sound
 License:	LGPLv2+
 URL:		https://www.audiocoding.com
 # See also https://github.com/knik0/faac
-Source0:	https://github.com/knik0/faac/archive/%{fsversion}/%{name}-%{fsversion}.tar.gz
+Source0:	https://github.com/knik0/faac/archive/refs/tags/faac-%{version}.tar.gz
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	autoconf
 BuildRequires:	dos2unix
@@ -45,6 +46,8 @@ by software patents.
 %package -n %{libname}
 Summary:	Free Advanced Audio Encoder shared library
 Group:		System/Libraries
+# Renamed 2025-03-01 before 6.0
+%rename %{oldlibname}
 
 %description -n %{libname}
 FAAC is an AAC encoder based on the ISO MPEG-4 reference code.
@@ -75,6 +78,8 @@ by software patents.
 %package -n %{lib32name}
 Summary:	Free Advanced Audio Encoder shared library (32-bit)
 Group:		System/Libraries
+# Renamed 2025-03-01 before 6.0
+%rename %{oldlib32name}
 
 %description -n %{lib32name}
 FAAC is an AAC encoder based on the ISO MPEG-4 reference code.
@@ -102,7 +107,7 @@ by software patents.
 %endif
 
 %prep
-%autosetup -p1 -n %{name}-%{fsversion}
+%autosetup -p1 -n %{name}-%{name}-%{version}
 aclocal
 autoheader
 libtoolize --automake
@@ -147,11 +152,13 @@ cp include/*h %{buildroot}%{_includedir}
 %files -n %develname
 %{_libdir}/*.so
 %{_includedir}/*
+%{_libdir}/pkgconfig/*
 
 %if %{with compat32}
 %files -n %{lib32name}
 %{_prefix}/lib/libfaac*so.%{major}*
 
 %files -n %{devel32name}
-%{_prefix}/lib/libfaac.so
+%{_prefix}/lib/libfaac*.so
+%{_prefix}/lib/pkgconfig/*
 %endif
