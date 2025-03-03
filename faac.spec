@@ -18,7 +18,7 @@
 %define devel32name lib%{name}-devel
 
 Name:		faac
-Version:	1.31
+Version:	1.31.1
 Release:	1
 Epoch:		1
 Summary:	Freeware Advanced Audio Encoder
