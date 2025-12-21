@@ -27,6 +27,10 @@ License:	LGPLv2+
 URL:		https://www.audiocoding.com
 # See also https://github.com/knik0/faac
 Source0:	https://github.com/knik0/faac/archive/refs/tags/faac-%{version}.tar.gz
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	autoconf
 BuildRequires:	dos2unix
