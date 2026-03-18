@@ -18,25 +18,20 @@
 %define devel32name lib%{name}-devel
 
 Name:		faac
-Version:	1.31.1
+Version:	1.40
 Release:	1
-Epoch:		1
 Summary:	Freeware Advanced Audio Encoder
 Group:		Sound
 License:	LGPLv2+
 URL:		https://www.audiocoding.com
 # See also https://github.com/knik0/faac
 Source0:	https://github.com/knik0/faac/archive/refs/tags/faac-%{version}.tar.gz
-BuildRequires:	automake
-BuildRequires:	libtool-base
-BuildRequires:	slibtool
-BuildRequires:	make
+BuildSystem:	meson
 BuildRequires:	pkgconfig(sndfile)
-BuildRequires:	autoconf
 BuildRequires:	dos2unix
 #gw else the detection for libmp4v2 kicks in
-BuildConflicts:	%{libname}-devel < %{epoch}:%{version}-%{release}
-BuildConflicts:	%{develname} < %{epoch}:%{version}-%{release}
+BuildConflicts:	%{libname}-devel < 1:%{version}-%{release}
+BuildConflicts:	%{develname} < 1:%{version}-%{release}
 %if %{with compat32}
 BuildRequires:  libc6
 %endif
@@ -65,8 +60,8 @@ by software patents.
 %package -n %{develname}
 Summary:	Free Advanced Audio Encoder development files
 Group:		Development/C++
-Requires:	%{libname} = %{epoch}:%{version}-%{release}
-Provides:	%{name}-devel = %{epoch}:%{version}-%{release}
+Requires:	%{libname} = %{EVRD}
+Provides:	%{name}-devel = %{EVRD}
 Obsoletes:	%mklibname -d %{name} 0
 
 %description -n %{develname}
@@ -97,8 +92,8 @@ by software patents.
 %package -n %{devel32name}
 Summary:	Free Advanced Audio Encoder development files (32-bit)
 Group:		Development/C++
-Requires:	%{lib32name} = %{epoch}:%{version}-%{release}
-Requires:	%{develname} = %{epoch}:%{version}-%{release}
+Requires:	%{lib32name} = %{EVRD}
+Requires:	%{develname} = %{EVRD}
 
 %description -n %{devel32name}
 FAAC is an AAC encoder based on the ISO MPEG-4 reference code.
@@ -110,40 +105,13 @@ This package is in restricted, as the MPEG-4 format is covered
 by software patents.
 %endif
 
-%prep
-%autosetup -p1 -n %{name}-%{name}-%{version}
-aclocal
-autoheader
-libtoolize --automake
-automake --add-missing --copy
-autoconf
-
-export CONFIGURE_TOP="$(pwd)"
+%install -a
+# We don't need the static libraries, but the switch to
+# meson dropped the possibility to just not build them
+rm -f %{buildroot}%{_libdir}/*.a
 %if %{with compat32}
-mkdir build32
-cd build32
-%configure32 --with-mp4v2=internal
-cd ..
+rm %{buildroot}%{_prefix}/lib/*.a
 %endif
-mkdir build
-cd build
-%configure --with-mp4v2=internal
-
-%build
-%if %{with compat32}
-%make_build -C build32
-%endif
-%make_build -C build
-
-%install
-%if %{with compat32}
-%make_install -C build32
-%endif
-%make_install -C build
-
-# manual header installation
-mkdir -p %{buildroot}%{_includedir}
-cp include/*h %{buildroot}%{_includedir}
 
 %files
 %doc README TODO ChangeLog
