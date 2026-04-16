@@ -18,14 +18,14 @@
 %define devel32name lib%{name}-devel
 
 Name:		faac
-Version:	1.40
+Version:	1.50
 Release:	1
 Summary:	Freeware Advanced Audio Encoder
 Group:		Sound
 License:	LGPLv2+
 URL:		https://www.audiocoding.com
 # See also https://github.com/knik0/faac
-Source0:	https://github.com/knik0/faac/archive/refs/tags/faac-%{version}.tar.gz
+Source0:	https://github.com/knik0/faac/archive/faac-faac-%{version}.tar.gz
 BuildSystem:	meson
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	dos2unix
