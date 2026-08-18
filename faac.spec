@@ -106,6 +106,12 @@ by software patents.
 %endif
 
 %install -a
+%if %{with compat32}
+# meson BuildSystem currently installs 64-bit then 32-bit (unlike
+# cmake/autotools), so the 32-bit frontend overwrites /usr/bin/faac.
+# Re-install native files last until distro-release flips that order.
+%meson_install
+%endif
 # We don't need the static libraries, but the switch to
 # meson dropped the possibility to just not build them
 rm -f %{buildroot}%{_libdir}/*.a
