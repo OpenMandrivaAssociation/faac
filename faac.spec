@@ -9,7 +9,7 @@
 
 %define distsuffix plf
 
-%define major 0
+%define major 1
 %define oldlibname %mklibname %{name} 0
 %define libname %mklibname %{name}
 %define develname %mklibname -d %{name}
@@ -18,14 +18,14 @@
 %define devel32name lib%{name}-devel
 
 Name:		faac
-Version:	1.50
+Version:	2.1
 Release:	1
 Summary:	Freeware Advanced Audio Encoder
 Group:		Sound
 License:	LGPLv2+
 URL:		https://www.audiocoding.com
 # See also https://github.com/knik0/faac
-Source0:	https://github.com/knik0/faac/archive/faac-faac-%{version}.tar.gz
+Source0:	https://github.com/knik0/faac/archive/refs/tags/faac-%{version}.tar.gz
 BuildSystem:	meson
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	dos2unix
@@ -114,7 +114,7 @@ rm %{buildroot}%{_prefix}/lib/*.a
 %endif
 
 %files
-%doc README TODO ChangeLog
+%doc README.md TODO ChangeLog
 %{_bindir}/faac
 %{_mandir}/man1/faac.1*
 
