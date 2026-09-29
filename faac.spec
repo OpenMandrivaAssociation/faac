@@ -9,7 +9,7 @@
 
 %define distsuffix plf
 
-%define major 1
+%define major 2
 %define oldlibname %mklibname %{name} 0
 %define libname %mklibname %{name}
 %define develname %mklibname -d %{name}
@@ -18,7 +18,7 @@
 %define devel32name lib%{name}-devel
 
 Name:		faac
-Version:	2.1
+Version:	2.2
 Release:	1
 Summary:	Freeware Advanced Audio Encoder
 Group:		Sound
