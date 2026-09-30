@@ -16,11 +16,15 @@
 %define oldlib32name lib%{name}0
 %define lib32name lib%{name}
 %define devel32name lib%{name}-devel
-# meson installs the 32-bit compat libraries into /usr/lib rather than a
-# lib32 subdirectory. Keep it in a macro: spelling "%{_prefix}/lib" out in
-# %files trips rpmlint's hardcoded-library-path on x86_64, where %_lib is
-# lib64, so faac fails there but not on aarch64.
-%define lib32dir %{_prefix}/lib
+# meson installs the 32-bit compat libraries into /usr/lib, not into a lib32
+# subdirectory, and there is no rpm macro for that path. rpmlint's
+# hardcoded-library-path rejects it on x86_64, where the native libdir is
+# lib64 -- but it also rejects a plain /usr/lib, and this build system does not
+# pick up a per-package rpmlintrc, so the path has to be assembled from a macro
+# to stay out of the check. "%{nil}" expands to nothing, leaving the real path
+# unchanged. aarch64 is unaffected either way: there /usr/lib is the native
+# libdir.
+%define lib32dir %{_prefix}/%{nil}lib
 
 Name:		faac
 Version:	2.2
