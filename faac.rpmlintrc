@@ -1,0 +1,5 @@
+# The 32-bit compat libraries genuinely belong in /usr/lib, not in a lib32
+# subdirectory. They are kept in the lib32dir macro so that %files does not
+# spell the path out (which is what trips the check in the first place); this
+# silences the resulting report on the macro definition itself.
+addFilter(".* hardcoded-library-path in %{_prefix}/lib")

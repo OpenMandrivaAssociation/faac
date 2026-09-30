@@ -16,6 +16,11 @@
 %define oldlib32name lib%{name}0
 %define lib32name lib%{name}
 %define devel32name lib%{name}-devel
+# meson installs the 32-bit compat libraries into /usr/lib rather than a
+# lib32 subdirectory. Keep it in a macro: spelling "%{_prefix}/lib" out in
+# %files trips rpmlint's hardcoded-library-path on x86_64, where %_lib is
+# lib64, so faac fails there but not on aarch64.
+%define lib32dir %{_prefix}/lib
 
 Name:		faac
 Version:	2.2
@@ -116,7 +121,7 @@ by software patents.
 # meson dropped the possibility to just not build them
 rm -f %{buildroot}%{_libdir}/*.a
 %if %{with compat32}
-rm %{buildroot}%{_prefix}/lib/*.a
+rm %{buildroot}%{lib32dir}/*.a
 %endif
 
 %files
@@ -134,9 +139,9 @@ rm %{buildroot}%{_prefix}/lib/*.a
 
 %if %{with compat32}
 %files -n %{lib32name}
-%{_prefix}/lib/libfaac*so.%{major}*
+%{lib32dir}/libfaac*so.%{major}*
 
 %files -n %{devel32name}
-%{_prefix}/lib/libfaac*.so
-%{_prefix}/lib/pkgconfig/*
+%{lib32dir}/libfaac*.so
+%{lib32dir}/pkgconfig/*
 %endif
