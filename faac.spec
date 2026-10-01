@@ -42,7 +42,10 @@ BuildRequires:	dos2unix
 BuildConflicts:	%{libname}-devel < 1:%{version}-%{release}
 BuildConflicts:	%{develname} < 1:%{version}-%{release}
 %if %{with compat32}
-BuildRequires:  libc6
+BuildRequires:	libc6
+# the 32-bit clang runtime (libclang_rt.builtins.a) needed for -m32 links
+# is only shipped in the cross i686 toolchain
+BuildRequires:	cross-i686-openmandriva-linux-gnu-clang
 %endif
 
 %description
