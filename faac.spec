@@ -114,6 +114,14 @@ This package is in restricted, as the MPEG-4 format is covered
 by software patents.
 %endif
 
+%conf -p
+%if %{with compat32}
+# TEMP DEBUG: print the toolchain context for the 32-bit pass
+cc --version 2>&1 | head -1
+echo 'int main(){return 0;}' | cc -m32 -x c - -o /tmp/f32p 2>&1 | tail -4
+echo 'int main(){return 0;}' | cc -m32 -x c - -v -o /tmp/f32p2 2>&1 | grep -iE 'sysroot|selected|Scrt1|crt1\.o|crti\.o|crtn\.o|crtbegin|crtend|ld\.lld|cannot|error:' | tail -15
+%endif
+
 %install -a
 %if %{with compat32}
 # meson BuildSystem currently installs 64-bit then 32-bit (unlike
